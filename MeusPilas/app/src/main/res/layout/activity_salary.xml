@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/llSalary"
+    android:visibility="visible">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/labelSalary"
+        android:text="@string/labelSalary"
+        android:textSize="20sp"
+        android:gravity="start"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/valueSalary"
+        android:inputType="numberDecimal"
+        android:hint="@string/typeSalary"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/labelDate"
+        android:text="@string/labelDateSalary"
+        android:textSize="20sp"
+        android:gravity="start"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etDayPaymentSalary"
+        android:hint="@string/typeDateSalary"
+        android:textSize="20sp"
+        android:gravity="start"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/btSalary"
+        android:id="@+id/btSalary"/>
+</LinearLayout>
