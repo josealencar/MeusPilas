@@ -4,14 +4,112 @@
     android:layout_height="match_parent"
     android:id="@+id/llLoans"
     android:visibility="visible">
-    <!--
-    valueLoan
-    amountOfInstallments
-    interestRates
-    dayPayment
-    timeToPayment
-    beneficiaryName
-    typeBeneficiary
-    -->
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelLoan"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etValueLoan"
+        android:inputType="numberDecimal"
+        android:hint="@string/typeLoan"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelAmountOfInstallments"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etAmountOfInstallments"
+        android:inputType="number"
+        android:hint="@string/typeAmountOfInstallments"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelInterestRates"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:id="@+id/etInterestRates"
+        android:hint="@string/typeInterestRates"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelDateLoan"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/typeDateLoan"
+        android:id="@+id/etDayPaymentLoan"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelTimeToPayment"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/typeTimeToPayment"
+        android:id="@+id/etTimeToPayment"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelBeneficiaryName"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/typeBeneficiaryName"
+        android:inputType="text"
+        android:id="@+id/etBeneficiaryName"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/labelTypeBeneficiary"
+        android:textSize="25sp"/>
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/individuals"
+            android:textSize="25sp"/>
+
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/legalEntity"
+            android:textSize="25sp"/>
+    </RadioGroup>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/btLoan"
+        android:textSize="25sp"/>
 </LinearLayout>

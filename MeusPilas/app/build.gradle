@@ -27,4 +27,5 @@ dependencies {
     compile 'com.google:google:5'
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.android.support:appcompat-v7:22.1.1'
+    compile files('libs/db4o-8.0.249.16098-core-java5.jar')
 }

@@ -1,4 +1,4 @@
-package josealencar.com.br.meuspilas.source;
+package josealencar.com.br.meuspilas.model;
 
 /**
  * Created by José on 26/05/2015.

@@ -71,4 +71,5 @@
     <string name="labelTypeBeneficiary">Select the type of the Beneficiary</string>
     <string name="individuals">Individuals</string>
     <string name="legalEntity">Legal Entity</string>
+    <string name="btLoan">Save Loan!</string>
 </resources>
