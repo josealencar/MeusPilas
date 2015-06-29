@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import josealencar.com.br.meuspilas.dao.Db4oHelper;
 
 
 public class EntryMainActivity extends ActionBarActivity {
@@ -26,6 +29,10 @@ public class EntryMainActivity extends ActionBarActivity {
     LinearLayout llIncome;
     LinearLayout llOutcome;
     LinearLayout llTransfer;
+    LinearLayout llSalary;
+    LinearLayout llLoans;
+
+    Db4oHelper db4o;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,8 @@ public class EntryMainActivity extends ActionBarActivity {
         llIncome = (LinearLayout) findViewById(R.id.llIncome);
         llOutcome = (LinearLayout) findViewById(R.id.llOutcome);
         llTransfer = (LinearLayout) findViewById(R.id.llTransfer);
+        llSalary = (LinearLayout) findViewById(R.id.llSalary);
+        llLoans = (LinearLayout) findViewById(R.id.llLoans);
 
         btIncome = (Button) findViewById(R.id.btIncome);
         btOutcome = (Button) findViewById(R.id.btOutcome);
@@ -43,6 +52,8 @@ public class EntryMainActivity extends ActionBarActivity {
         spIncome = (Spinner) findViewById(R.id.spIncome);
         spOutcome = (Spinner) findViewById(R.id.spOutcome);
         spTransfer = (Spinner) findViewById(R.id.spTransfer);
+
+        configurarDb4o();
 
         btIncome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,14 +90,18 @@ public class EntryMainActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CharSequence incomeSelecionado = (CharSequence) parent.getItemAtPosition(position);
-                if(incomeSelecionado.equals(R.string.salary)){
-
-                } else if(incomeSelecionado.equals(R.string.loan)){
-
-                } else if(incomeSelecionado.equals(R.string.gift)){
-
-                } else if(incomeSelecionado.equals(R.string.other)){
-
+                if(incomeSelecionado.equals(getString(R.string.salary))){
+                    llSalary.setVisibility(View.VISIBLE);
+                    llLoans.setVisibility(View.GONE);
+                } else if(incomeSelecionado.equals(getString(R.string.loan))){
+                    llSalary.setVisibility(View.GONE);
+                    llLoans.setVisibility(View.VISIBLE);
+                } else if(incomeSelecionado.equals(getString(R.string.gift))){
+                    llSalary.setVisibility(View.GONE);
+                    llLoans.setVisibility(View.GONE);
+                } else if(incomeSelecionado.equals(getString(R.string.other))){
+                    llSalary.setVisibility(View.GONE);
+                    llLoans.setVisibility(View.GONE);
                 }
             }
 
@@ -127,6 +142,36 @@ public class EntryMainActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void configurarDb4o() {
+        // TODO: criar db4oHelper e clienteDao
+
+        //pegar o diretorio
+        String dir=getDir("data",0)+"/";
+
+        //abre o db4o helper
+        db4o=new Db4oHelper(dir);
+
+        //abre o cliente dao
+        //Cliente é a classe - DAO (Data Access Object) -> inserir, atualizar, excluir, listar, buscar por id.
+        //clienteDao=new ClienteDao(db4o);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // TODO: abrir conexão e carregar clientes
+        db4o.abrirConexao();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // TODO: fechar conexão
+        db4o.fecharConexao();
     }
 
     @Override
