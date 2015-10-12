@@ -1,5 +1,7 @@
 package josealencar.com.br.meuspilas.dao;
 
+import josealencar.com.br.meuspilas.model.User;
+
 /**
  * Created by José on 25/06/2015.
  */
@@ -11,4 +13,7 @@ public class UserDao {
     }
 
     // TODO : CRUD User
+    public void inserir(User u) {
+        db4o.db().store(u);
+    }
 }
