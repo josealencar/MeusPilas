@@ -4,21 +4,19 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class User {
-    private int idUser;
+    private String idGooglePlus;
     private String nameUser;
     private String emailUser;
     private String password;
 
-    public User(int idUser, String nameUser, String emailUser, String password){
-        this.idUser = idUser;
+    public User(String idGooglePlus, String nameUser, String emailUser, String password){
+        this.idGooglePlus = idGooglePlus;
         this.nameUser = nameUser;
         this.emailUser = emailUser;
         this.password = password;
     }
 
-    public int getIdUser() {
-        return this.idUser;
-    }
+    public User() {}
 
     public String getNameUser() {
         return this.nameUser;
@@ -30,6 +28,10 @@ public class User {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public String getIdGooglePlus() {
+        return idGooglePlus;
     }
 
     @Override

@@ -21,12 +21,12 @@ public class Db4oHelper {
         return db;
     }
 
-    public void abrirConexao() {
+    public void openConnection() {
         String dbFile = dir + DB4O_FILE;
         db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), dbFile);
     }
 
-    public void fecharConexao() {
+    public void closeConnection() {
         if (db != null) {
             db.close();
         }

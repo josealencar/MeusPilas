@@ -1,9 +1,8 @@
 package josealencar.com.br.meuspilas;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.location.GpsStatus;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,18 +13,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.Builder;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+
+import java.util.List;
+
+import josealencar.com.br.meuspilas.dao.Db4oHelper;
+import josealencar.com.br.meuspilas.dao.UserDao;
+import josealencar.com.br.meuspilas.model.User;
 
 
 public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -34,10 +32,16 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private ConnectionResult connectionResult;
 
+    private static final String USER_ID = "userId";
+
+    private Db4oHelper db4o;
+    private UserDao userDao;
+
     private boolean isConcentScreenOpened;
     private boolean isSignInButtonClicked;
 
     private Button signIn;
+    private Button newAccount;
     private SignInButton sigInPlus;
     private EditText emailUser;
     private EditText passwordUser;
@@ -49,6 +53,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         setContentView(R.layout.activity_login);
 
         findConstructor();
+        configurarDb4o();
 
         googleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
                 .addConnectionCallbacks(LoginActivity.this)
@@ -57,18 +62,32 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
 
+        while (googleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(googleApiClient);
+            Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient);
+            googleApiClient.disconnect();
+        }
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(LoginActivity.this,MainActivity.class);
+                tryLogin();
+            }
+        });
+
+        newAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, NewAccountActivity.class);
                 startActivity(i);
             }
         });
 
+        sigInPlus.setEnabled(false);
         sigInPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!googleApiClient.isConnected()){
+                if (!googleApiClient.isConnected()) {
                     isConcentScreenOpened = true;
                     isSignInButtonClicked = true;
                     resolveSignIn();
@@ -77,8 +96,32 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         });
     }
 
+    private void tryLogin() {
+        String txtEmail = emailUser.getText().toString();
+        String txtPassword = passwordUser.getText().toString();
+
+        List<User> users = userDao.findByEmail(txtEmail);
+
+        for(User u : users) {
+            if (u.getPassword().equals(txtPassword)) {
+                final long userId = userDao.getId(u);
+                Intent i =new Intent(LoginActivity.this, MainActivity.class);
+                i.putExtra(USER_ID, userId);
+                startActivity(i);
+                return;
+            }
+        }
+
+        if (users.isEmpty()) {
+            Toast.makeText(LoginActivity.this, R.string.userNotFound, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(LoginActivity.this, R.string.passwordIncorrect, Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void findConstructor() {
         signIn = (Button) findViewById(R.id.button_login);
+        newAccount = (Button) findViewById(R.id.button_create_account);
         sigInPlus = (SignInButton) findViewById(R.id.btSignInDefault);
         emailUser = (EditText) findViewById(R.id.user);
         passwordUser = (EditText) findViewById(R.id.password);
@@ -92,6 +135,29 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
                 googleApiClient.connect();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db4o.openConnection();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        db4o.closeConnection();
+    }
+
+    private void configurarDb4o() {
+        // pegar o diretório do banco
+        String dir = getDir("data", 0) + "/" ;
+
+        // abre o dab4o helper
+        db4o = new Db4oHelper(dir);
+
+        // abre o user dao
+        userDao = new UserDao(db4o);
     }
 
     @Override

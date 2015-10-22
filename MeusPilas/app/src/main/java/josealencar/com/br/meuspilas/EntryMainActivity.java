@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import josealencar.com.br.meuspilas.dao.Db4oHelper;
 
@@ -163,7 +162,7 @@ public class EntryMainActivity extends ActionBarActivity {
         super.onResume();
 
         // TODO: abrir conexão e carregar clientes
-        db4o.abrirConexao();
+        db4o.openConnection();
     }
 
     @Override
@@ -171,7 +170,7 @@ public class EntryMainActivity extends ActionBarActivity {
         super.onPause();
 
         // TODO: fechar conexão
-        db4o.fecharConexao();
+        db4o.closeConnection();
     }
 
     @Override

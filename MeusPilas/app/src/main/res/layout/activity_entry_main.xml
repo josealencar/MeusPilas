@@ -44,10 +44,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/income_activity" />
+        <include layout="@layout/activity_income" />
 
-        <include layout="@layout/outcome_activity" />
+        <include layout="@layout/activity_outcome" />
 
-        <include layout="@layout/transfer_activity" />
+        <include layout="@layout/activity_transfer" />
     </LinearLayout>
 </LinearLayout>

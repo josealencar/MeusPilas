@@ -1,5 +1,11 @@
 package josealencar.com.br.meuspilas.dao;
 
+import com.db4o.ObjectSet;
+import com.db4o.query.Predicate;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import josealencar.com.br.meuspilas.model.User;
 
 /**
@@ -13,7 +19,21 @@ public class UserDao {
     }
 
     // TODO : CRUD User
-    public void inserir(User u) {
+    public void save(User u) {
         db4o.db().store(u);
+    }
+
+    public long getId(User u) {
+        return db4o.db().ext().getID(u);
+    }
+
+    public List<User> findByEmail(final String email) {
+        ObjectSet<User> users = db4o.db().query(new Predicate<User>() {
+            @Override
+            public boolean match(User user) {
+                return user.getEmailUser().toLowerCase().contains(email.toLowerCase());
+            }
+        });
+        return new ArrayList<>(users);
     }
 }

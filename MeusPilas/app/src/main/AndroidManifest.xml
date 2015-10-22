@@ -32,6 +32,11 @@
             android:name=".EntryMainActivity"
             android:label="@string/title_activity_entry_main" >
         </activity>
+        <activity
+            android:name=".NewAccountActivity"
+            android:label="@string/title_activity_new_account"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
