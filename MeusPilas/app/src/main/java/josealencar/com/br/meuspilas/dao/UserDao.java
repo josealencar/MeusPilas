@@ -36,4 +36,8 @@ public class UserDao {
         });
         return new ArrayList<>(users);
     }
+
+    public User findById(Long id) {
+        return db4o.db().ext().getByID(id);
+    }
 }

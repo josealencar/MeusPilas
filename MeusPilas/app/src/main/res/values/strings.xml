@@ -2,42 +2,43 @@
     <!-- Name App-->
     <string name="app_name">Meus Pilas</string>
     <!-- Login-->
-    <string name="type_email">Type your E-mail!</string>
-    <string name="action_settings">Settings</string>
-    <string name="type_password">Type your Password!</string>
-    <string name="button_login">Access your Account</string>
-    <string name="button_create_account">Create an Account</string>
-    <string name="messageUserPlusFail">User data not released by google service!</string>
-    <string name="userNotFound">User not Found!</string>
-    <string name="passwordIncorrect">Password Incorrect!</string>
+    <string name="type_email">Digite seu E-mail!</string>
+    <string name="action_settings">Configurações</string>
+    <string name="type_password">Digite sua Senha!</string>
+    <string name="button_login">Acessar sua Conta</string>
+    <string name="button_create_account">Criar uma nova Conta</string>
+    <string name="messageUserPlusFail">Conteúdo da conta não liberada pela google!</string>
+    <string name="userNotFound">Usuário não encontrado!</string>
+    <string name="passwordIncorrect">Senha Incorreta!</string>
     <!-- Create Account-->
-    <string name="createAccountName">User Name</string>
+    <string name="title_activity_new_account">Criar Conta</string>
+    <string name="createAccountName">Nome de usuário</string>
     <string name="createAccountEmail">E-mail</string>
-    <string name="createAccountPassword">Password</string>
-    <string name="btNewAccount">Create an Account</string>
-    <string name="btCancel">Cancel</string>
+    <string name="createAccountPassword">Senha</string>
+    <string name="btNewAccount">Criar sua conta</string>
+    <string name="btCancel">Cancelar</string>
     <!-- Home-->
-    <string name="title_activity_main">MainActivity</string>
-    <string name="labelBalance">Current Balance:</string>
+    <string name="title_activity_main">Visão Geral</string>
+    <string name="labelBalance">Saldo Atual:</string>
     <string name="labelMonetary">R$</string>
     <string name="labelText">0,00</string>
-    <string name="titleSummary">Month Summary</string>
-    <string name="income">Income: R$</string>
-    <string name="outcome">Outcome: R$</string>
+    <string name="titleSummary">Resumo Mensal</string>
+    <string name="income">Receitas: R$</string>
+    <string name="outcome">Gastos: R$</string>
     <string name="valueIncome">0,00</string>
     <string name="valueOutcome">0,00</string>
-    <string name="titleGraphics">Graphics</string>
-    <string name="title_activity_entry_main">EntryMainActivity</string>
-    <string name="newEntry">New Entry</string>
+    <string name="titleGraphics">Gráficos</string>
+    <string name="title_activity_entry_main">Cadastros</string>
+    <string name="newEntry">Novo registro</string>
     <!-- Entry-->
-    <string name="btIncome">Income</string>
-    <string name="btOutcome">Outcome</string>
-    <string name="btTransfer">Transfer</string>
+    <string name="btIncome">Receitas</string>
+    <string name="btOutcome">Despesas</string>
+    <string name="btTransfer">Transferências</string>
     <!-- Income-->
-    <string name="salary">Salary</string>
-    <string name="loan">Loan</string>
-    <string name="gift">Gift</string>
-    <string name="other">Other</string>
+    <string name="salary">Salário</string>
+    <string name="loan">Empréstimo</string>
+    <string name="gift">Presente</string>
+    <string name="other">Outros</string>
     <string-array name="spIncome">
         <item>@string/salary</item>
         <item>@string/loan</item>
@@ -45,41 +46,41 @@
         <item>@string/other</item>
     </string-array>
     <!-- Outcome-->
-    <string name="fixedAccount">Fixed Account</string>
-    <string name="variableAccounts">Variable Accounts</string>
+    <string name="fixedAccount">Contas Fixas</string>
+    <string name="variableAccounts">Contas Variáveis</string>
     <string-array name="spOutcome">
         <item>@string/fixedAccount</item>
         <item>@string/variableAccounts</item>
     </string-array>
     <!-- Transfer-->
-    <string name="otherAccount">Other Account</string>
-    <string name="otherPerson">Other Person Account</string>
+    <string name="otherAccount">Conta de Terceiros</string>
+    <string name="otherPerson">Outra Conta Pessoal</string>
     <string-array name="spTransfer">
         <item>@string/otherAccount</item>
         <item>@string/otherPerson</item>
     </string-array>
     <!-- LL Salary-->
-    <string name="labelSalary">Salary: R$</string>
-    <string name="typeSalary">Type your Salary</string>
-    <string name="labelDateSalary">Day of Payment:</string>
-    <string name="typeDateSalary">Type the day of your Payment.</string>
-    <string name="btSalary">Save!</string>
+    <string name="labelSalary">Salário: R$</string>
+    <string name="typeSalary">Salário</string>
+    <string name="labelDateSalary">Dia do Pagamento:</string>
+    <string name="typeDateSalary">Dia</string>
+    <string name="btSalary">Salvar</string>
+    <string name="incompleteSalary">Os campos estão imcompletos, favor preencher todos os campos!</string>
     <!-- LL Loans-->
-    <string name="labelLoan">Loan: R$</string>
-    <string name="typeLoan">Type the value of the Loan.</string>
-    <string name="labelAmountOfInstallments">Amount Of Installments:</string>
-    <string name="typeAmountOfInstallments">Type the Amount Of Installments</string>
-    <string name="labelInterestRates">Interest Rates: (%)</string>
-    <string name="typeInterestRates">Type the Rates of the Loan.</string>
-    <string name="labelDateLoan">Day to Pay:</string>
-    <string name="typeDateLoan">Type the day to Pay.</string>
-    <string name="labelTimeToPayment">How much time to the first Installment (days)?</string>
-    <string name="typeTimeToPayment">Type the amount of days to the first Installment</string>
-    <string name="labelBeneficiaryName">Beneficiary Name:</string>
-    <string name="typeBeneficiaryName">Type the name of the Beneficiary.</string>
-    <string name="labelTypeBeneficiary">Select the type of the Beneficiary</string>
-    <string name="individuals">Individuals</string>
-    <string name="legalEntity">Legal Entity</string>
-    <string name="btLoan">Save Loan!</string>
-    <string name="title_activity_new_account">NewAccountActivity</string>
+    <string name="labelLoan">Empréstimo: R$</string>
+    <string name="typeLoan">Empréstimo</string>
+    <string name="labelAmountOfInstallments">Quantidade de Mensalidades:</string>
+    <string name="typeAmountOfInstallments">Mensalidades</string>
+    <string name="labelInterestRates">Juros: (%)</string>
+    <string name="typeInterestRates">Juros</string>
+    <string name="labelDateLoan">Dia do pagamento:</string>
+    <string name="typeDateLoan">Dia</string>
+    <string name="labelTimeToPayment">Tempo para primeira parcela (dias)?</string>
+    <string name="typeTimeToPayment"></string>
+    <string name="labelBeneficiaryName">Beneficiário:</string>
+    <string name="typeBeneficiaryName">Beneficiário</string>
+    <string name="labelTypeBeneficiary">Selecione o Tipo de Beneficiário:</string>
+    <string name="individuals">Pessoa Física</string>
+    <string name="legalEntity">Pessoa Jurídica</string>
+    <string name="btLoan">Salvar Empréstimo!</string>
 </resources>

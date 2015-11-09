@@ -32,7 +32,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient;
     private ConnectionResult connectionResult;
 
-    private static final String USER_ID = "userId";
+    static final String USER_ID = "userId";
 
     private Db4oHelper db4o;
     private UserDao userDao;

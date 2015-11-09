@@ -4,17 +4,17 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class Salary {
-    private int idUser;
+    private long idUser;
     private double valueSalary;
     private int dayPayment;
 
-    public Salary(int idUser, double valueSalary, int dayPayment) {
+    public Salary(long idUser, double valueSalary, int dayPayment) {
         this.idUser = idUser;
         this.valueSalary = valueSalary;
         this.dayPayment = dayPayment;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return this.idUser;
     }
 

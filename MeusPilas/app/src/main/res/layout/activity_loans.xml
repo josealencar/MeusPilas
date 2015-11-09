@@ -92,24 +92,28 @@
 
         <RadioGroup
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/rgTypeBeneficiary">
 
             <RadioButton
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/individuals"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:id="@+id/rbIndividuals"/>
 
             <RadioButton
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/legalEntity"
-                android:textSize="25sp"/>
+                android:textSize="25sp"
+                android:id="@+id/rbLegalPerson"/>
         </RadioGroup>
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/btLoan"
             android:layout_marginTop="10dp"
             android:text="@string/btLoan"
             android:textSize="25sp"/>

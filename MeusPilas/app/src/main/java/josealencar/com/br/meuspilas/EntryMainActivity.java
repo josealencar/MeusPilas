@@ -1,5 +1,6 @@
 package josealencar.com.br.meuspilas;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,50 +9,64 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import josealencar.com.br.meuspilas.dao.Db4oHelper;
+import josealencar.com.br.meuspilas.dao.FixedAccountDao;
+import josealencar.com.br.meuspilas.dao.LoanDao;
+import josealencar.com.br.meuspilas.dao.SalaryDao;
+import josealencar.com.br.meuspilas.dao.VariableAccountDao;
+import josealencar.com.br.meuspilas.model.Salary;
 
 
 public class EntryMainActivity extends ActionBarActivity {
 
     //TODO: Buttons Navigation, Spinners
-    Button btIncome;
-    Button btOutcome;
-    Button btTransfer;
+    private Button btIncome;
+    private Button btOutcome;
+    private Button btTransfer;
+    private Button btSalary;
+    private Button btLoan;
 
-    Spinner spIncome;
-    Spinner spOutcome;
-    Spinner spTransfer;
+    private Spinner spIncome;
+    private Spinner spOutcome;
+    private Spinner spTransfer;
 
-    LinearLayout llIncome;
-    LinearLayout llOutcome;
-    LinearLayout llTransfer;
-    LinearLayout llSalary;
-    LinearLayout llLoans;
+    private LinearLayout llIncome;
+    private LinearLayout llOutcome;
+    private LinearLayout llTransfer;
+    private LinearLayout llSalary;
+    private LinearLayout llLoans;
 
-    Db4oHelper db4o;
+    private EditText etValueSalary;
+    private EditText etDayPaymentSalary;
+    private EditText etValueLoan;
+    private EditText etAmountOfInstallments;
+    private EditText etInterestRates;
+    private EditText etDayPaymentLoan;
+    private EditText etTimeToPayment;
+    private EditText etBeneficiaryName;
+
+    private Db4oHelper db4o;
+    private SalaryDao salaryDao;
+    private LoanDao loanDao;
+    private FixedAccountDao fixedAccountDao;
+    private VariableAccountDao variableAccountDao;
+
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_main);
 
-        llIncome = (LinearLayout) findViewById(R.id.llIncome);
-        llOutcome = (LinearLayout) findViewById(R.id.llOutcome);
-        llTransfer = (LinearLayout) findViewById(R.id.llTransfer);
-        llSalary = (LinearLayout) findViewById(R.id.llSalary);
-        llLoans = (LinearLayout) findViewById(R.id.llLoans);
+        Intent i = getIntent();
+        userId = i.getLongExtra(MainActivity.USER_ID, 0);
 
-        btIncome = (Button) findViewById(R.id.btIncome);
-        btOutcome = (Button) findViewById(R.id.btOutcome);
-        btTransfer = (Button) findViewById(R.id.btTransfer);
-
-        spIncome = (Spinner) findViewById(R.id.spIncome);
-        spOutcome = (Spinner) findViewById(R.id.spOutcome);
-        spTransfer = (Spinner) findViewById(R.id.spTransfer);
-
+        findConstructor();
         configurarDb4o();
 
         btIncome.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +93,29 @@ public class EntryMainActivity extends ActionBarActivity {
                 llIncome.setVisibility(View.GONE);
                 llOutcome.setVisibility(View.GONE);
                 llTransfer.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btSalary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String valueSalary = etValueSalary.length() > 0 ? etValueSalary.getText().toString() : "";
+                String dayPayment = etDayPaymentSalary.length() > 0 ? etDayPaymentSalary.getText().toString() : "";
+                if (valueSalary.trim() != "" && dayPayment.trim() != "") {
+                    Salary salary = new Salary(userId, Double.valueOf(valueSalary.replace(",", ".")), Integer.valueOf(dayPayment));
+                    salaryDao.save(salary);
+                    etValueSalary.setText(null);
+                    etDayPaymentSalary.setText("");
+                } else {
+                    makeAToast(getString(R.string.incompleteSalary));
+                }
+            }
+        });
+
+        btLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -143,6 +181,31 @@ public class EntryMainActivity extends ActionBarActivity {
         });
     }
 
+    private void makeAToast(String message) {
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private void findConstructor() {
+        llIncome = (LinearLayout) findViewById(R.id.llIncome);
+        llOutcome = (LinearLayout) findViewById(R.id.llOutcome);
+        llTransfer = (LinearLayout) findViewById(R.id.llTransfer);
+        llSalary = (LinearLayout) findViewById(R.id.llSalary);
+        llLoans = (LinearLayout) findViewById(R.id.llLoans);
+
+        btIncome = (Button) findViewById(R.id.btIncome);
+        btOutcome = (Button) findViewById(R.id.btOutcome);
+        btTransfer = (Button) findViewById(R.id.btTransfer);
+        btSalary = (Button) findViewById(R.id.btSalary);
+        btLoan = (Button) findViewById(R.id.btLoan);
+
+        spIncome = (Spinner) findViewById(R.id.spIncome);
+        spOutcome = (Spinner) findViewById(R.id.spOutcome);
+        spTransfer = (Spinner) findViewById(R.id.spTransfer);
+
+        etValueSalary = (EditText) findViewById(R.id.etValueSalary);
+        etDayPaymentSalary = (EditText) findViewById(R.id.etDayPaymentSalary);
+    }
+
     private void configurarDb4o() {
         // TODO: criar db4oHelper e clienteDao
 
@@ -150,11 +213,11 @@ public class EntryMainActivity extends ActionBarActivity {
         String dir=getDir("data",0)+"/";
 
         //abre o db4o helper
-        db4o=new Db4oHelper(dir);
+        db4o = new Db4oHelper(dir);
 
         //abre o cliente dao
         //Cliente é a classe - DAO (Data Access Object) -> inserir, atualizar, excluir, listar, buscar por id.
-        //clienteDao=new ClienteDao(db4o);
+        salaryDao = new SalaryDao(db4o);
     }
 
     @Override

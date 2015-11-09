@@ -17,7 +17,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/valueSalary"
+            android:id="@+id/etValueSalary"
             android:inputType="numberDecimal"
             android:hint="@string/typeSalary"
             android:textSize="20sp"/>
@@ -34,6 +34,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etDayPaymentSalary"
+            android:inputType="number"
             android:hint="@string/typeDateSalary"
             android:textSize="20sp"
             android:gravity="start"/>
