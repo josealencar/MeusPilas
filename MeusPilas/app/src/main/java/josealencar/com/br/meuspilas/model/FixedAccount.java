@@ -4,19 +4,19 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class FixedAccount {
-    private int idUser;
+    private long idUser;
     private double valueAccount;
     private int dayPayment;
     private String typeAccount;
 
-    public FixedAccount(int idUser, double valueAccount, int dayPayment, String typeAccount) {
+    public FixedAccount(long idUser, double valueAccount, int dayPayment, String typeAccount) {
         this.idUser = idUser;
         this.valueAccount = valueAccount;
         this.dayPayment = dayPayment;
         this.typeAccount = typeAccount;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return this.idUser;
     }
 

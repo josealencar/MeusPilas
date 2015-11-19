@@ -37,6 +37,7 @@
             android:id="@+id/btTransfer"
             android:text="@string/btTransfer"
             android:textSize="15sp"
+            android:visibility="gone"
             style="?android:attr/buttonBarButtonStyle"/>
     </LinearLayout>
 

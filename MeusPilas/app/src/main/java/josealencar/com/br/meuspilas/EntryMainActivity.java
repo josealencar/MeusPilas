@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import josealencar.com.br.meuspilas.dao.FixedAccountDao;
 import josealencar.com.br.meuspilas.dao.LoanDao;
 import josealencar.com.br.meuspilas.dao.SalaryDao;
 import josealencar.com.br.meuspilas.dao.VariableAccountDao;
+import josealencar.com.br.meuspilas.model.Loan;
 import josealencar.com.br.meuspilas.model.Salary;
 
 
@@ -49,6 +52,8 @@ public class EntryMainActivity extends ActionBarActivity {
     private EditText etDayPaymentLoan;
     private EditText etTimeToPayment;
     private EditText etBeneficiaryName;
+
+    private RadioGroup rgTypeBeneficiary;
 
     private Db4oHelper db4o;
     private SalaryDao salaryDao;
@@ -115,7 +120,29 @@ public class EntryMainActivity extends ActionBarActivity {
         btLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String stringValueLoan = etValueLoan.length() > 0 ? etValueLoan.getText().toString() : "";
+                String stringDayPaymentLoan = etDayPaymentLoan.length() > 0 ? etDayPaymentLoan.getText().toString() : "";
+                if (stringValueLoan.trim() != "" && stringDayPaymentLoan.trim() != "") {
+                    RadioButton rbTypePerson = (RadioButton) findViewById(rgTypeBeneficiary.getCheckedRadioButtonId());
+                    String typePerson = rbTypePerson.getText().toString();
+                    double valueLoan = Double.parseDouble(stringValueLoan.replace(",", "."));
+                    int amountOfInstallments = etAmountOfInstallments.length() > 0 ? Integer.parseInt(etAmountOfInstallments.getText().toString()) : 0;
+                    int dayPaymentLoan = Integer.parseInt(stringDayPaymentLoan);
+                    double interestRates = etInterestRates.length() > 0 ? Double.parseDouble(etInterestRates.getText().toString().replace(",", ".")) : 0;
+                    int timeToPayment = etTimeToPayment.length() > 0 ? Integer.parseInt(etTimeToPayment.getText().toString()) : 0;
+                    String beneficiaryName = etBeneficiaryName.length() > 0 ? etBeneficiaryName.getText().toString() : "";
+                    Loan loan = new Loan(userId, valueLoan, amountOfInstallments, interestRates, dayPaymentLoan, timeToPayment, beneficiaryName, typePerson);
+                    loanDao.save(loan);
+                    etValueLoan.setText("");
+                    etAmountOfInstallments.setText("");
+                    etInterestRates.setText("");
+                    etDayPaymentLoan.setText("");
+                    etTimeToPayment.setText("");
+                    etBeneficiaryName.setText("");
+                    rgTypeBeneficiary.check(R.id.rbIndividuals);
+                } else {
+                    makeAToast(getString(R.string.incompleteLoan));
+                }
             }
         });
 
@@ -204,6 +231,14 @@ public class EntryMainActivity extends ActionBarActivity {
 
         etValueSalary = (EditText) findViewById(R.id.etValueSalary);
         etDayPaymentSalary = (EditText) findViewById(R.id.etDayPaymentSalary);
+        etValueLoan = (EditText) findViewById(R.id.etValueLoan);
+        etAmountOfInstallments = (EditText) findViewById(R.id.etAmountOfInstallments);
+        etInterestRates = (EditText) findViewById(R.id.etInterestRates);
+        etDayPaymentLoan = (EditText) findViewById(R.id.etDayPaymentLoan);
+        etTimeToPayment = (EditText) findViewById(R.id.etTimeToPayment);
+        etBeneficiaryName = (EditText) findViewById(R.id.etBeneficiaryName);
+
+        rgTypeBeneficiary = (RadioGroup) findViewById(R.id.rgTypeBeneficiary);
     }
 
     private void configurarDb4o() {
@@ -218,6 +253,7 @@ public class EntryMainActivity extends ActionBarActivity {
         //abre o cliente dao
         //Cliente é a classe - DAO (Data Access Object) -> inserir, atualizar, excluir, listar, buscar por id.
         salaryDao = new SalaryDao(db4o);
+        loanDao = new LoanDao(db4o);
     }
 
     @Override

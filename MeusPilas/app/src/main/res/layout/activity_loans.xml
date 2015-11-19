@@ -100,7 +100,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/individuals"
                 android:textSize="25sp"
-                android:id="@+id/rbIndividuals"/>
+                android:id="@+id/rbIndividuals"
+                android:checked="true"/>
 
             <RadioButton
                 android:layout_width="fill_parent"

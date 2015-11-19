@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:id="@+id/llVariableAccount">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/etValueVariableAccount"
+        android:inputType="numberDecimal"
+        android:id="@+id/etValueVariableAccount"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/etDayPaymentVariableAccount"
+        android:inputType="number"
+        android:id="@+id/etDayPaymentVariableAccount"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/etTypeVariableAccount"
+        android:id="@+id/etTypeVariableAccount"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/etAmountOfInstallmentsVariableAccount"
+        android:inputType="number"
+        android:id="@+id/etAmountOfInstallmentsVariableAccount"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btVariableAccount"
+        android:id="@+id/btVariableAccount"/>
+</LinearLayout>

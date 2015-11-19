@@ -4,7 +4,7 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class Loan {
-    private int idUser;
+    private long idUser;
     private double valueLoan;
     private int amountOfInstallments;
     private double interestRates;
@@ -13,7 +13,7 @@ public class Loan {
     private String beneficiaryName;
     private String typeBeneficiary;
 
-    public Loan(int idUser, double valueLoan, int amountOfInstallments,
+    public Loan(long idUser, double valueLoan, int amountOfInstallments,
                 double interestRates, int dayPayment, int timeToPayment, String beneficiaryName, String typeBeneficiary) {
         this.idUser = idUser;
         this.valueLoan = valueLoan;
@@ -25,7 +25,7 @@ public class Loan {
         this.typeBeneficiary = typeBeneficiary;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return this.idUser;
     }
 

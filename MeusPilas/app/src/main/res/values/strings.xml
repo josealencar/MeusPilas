@@ -42,8 +42,8 @@
     <string-array name="spIncome">
         <item>@string/salary</item>
         <item>@string/loan</item>
-        <item>@string/gift</item>
-        <item>@string/other</item>
+    <!--    <item>@string/gift</item>
+        <item>@string/other</item> -->
     </string-array>
     <!-- Outcome-->
     <string name="fixedAccount">Contas Fixas</string>
@@ -83,4 +83,16 @@
     <string name="individuals">Pessoa Física</string>
     <string name="legalEntity">Pessoa Jurídica</string>
     <string name="btLoan">Salvar Empréstimo!</string>
+    <string name="incompleteLoan">Favor preencher o valor e o dia para pagamento! (Os demais campos são opcionais)</string>
+    <!-- LL Fixed Account-->
+    <string name="etValueFixedAccount">Valor da conta</string>
+    <string name="etDayPaymentFixedAccount">Dia do pagamento</string>
+    <string name="etTypeFixedAccount">Descrição (Tipo)</string>
+    <string name="btFixedAccount">Salvar</string>
+    <!-- LL Variable Account-->
+    <string name="etValueVariableAccount">Valor conta</string>
+    <string name="etDayPaymentVariableAccount">Dia do pagamento</string>
+    <string name="etTypeVariableAccount">Descrição (Tipo)</string>
+    <string name="etAmountOfInstallmentsVariableAccount">Quantidade de prestações</string>
+    <string name="btVariableAccount">Salvar</string>
 </resources>
