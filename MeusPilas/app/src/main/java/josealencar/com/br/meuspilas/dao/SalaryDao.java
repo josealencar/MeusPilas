@@ -2,6 +2,7 @@ package josealencar.com.br.meuspilas.dao;
 
 import com.db4o.query.Predicate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import josealencar.com.br.meuspilas.model.Salary;
@@ -21,15 +22,38 @@ public class SalaryDao {
     }
 
     public Salary findById(long id) {
-        return db4o.db().ext().getByID(id);
+        try {
+            Salary salary = db4o.db().ext().getByID(id);
+            db4o.db().ext().activate(salary);
+            return salary;
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     public List<Salary> findByIdUser(final long idUser) {
-        return db4o.db().query(new Predicate<Salary>() {
+        try {
+            return db4o.db().query(new Predicate<Salary>() {
+                @Override
+                public boolean match(Salary salary) {
+                    return salary.getIdUser() == idUser;
+                }
+            });
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Salary> findBetweenDays(final long userId, final int day, final int thisDay) {
+        return db4o.db().ext().query(new Predicate<Salary>() {
             @Override
             public boolean match(Salary salary) {
-                return salary.getIdUser() == idUser;
+                return salary.getIdUser() == userId && salary.getDayPayment() > day && salary.getDayPayment() <= thisDay;
             }
         });
+    }
+
+    public long getId(Salary salary) {
+        return db4o.db().ext().getID(salary);
     }
 }

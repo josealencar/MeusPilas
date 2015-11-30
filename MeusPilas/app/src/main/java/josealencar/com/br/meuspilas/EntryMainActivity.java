@@ -16,13 +16,21 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import josealencar.com.br.meuspilas.dao.Db4oHelper;
 import josealencar.com.br.meuspilas.dao.FixedAccountDao;
 import josealencar.com.br.meuspilas.dao.LoanDao;
 import josealencar.com.br.meuspilas.dao.SalaryDao;
 import josealencar.com.br.meuspilas.dao.VariableAccountDao;
+import josealencar.com.br.meuspilas.model.FixedAccount;
 import josealencar.com.br.meuspilas.model.Loan;
 import josealencar.com.br.meuspilas.model.Salary;
+import josealencar.com.br.meuspilas.model.VariableAccount;
+import josealencar.com.br.meuspilas.service.FixedAccountService;
+import josealencar.com.br.meuspilas.service.LoanService;
+import josealencar.com.br.meuspilas.service.SalaryService;
+import josealencar.com.br.meuspilas.service.VariableAccountService;
 
 
 public class EntryMainActivity extends ActionBarActivity {
@@ -33,6 +41,8 @@ public class EntryMainActivity extends ActionBarActivity {
     private Button btTransfer;
     private Button btSalary;
     private Button btLoan;
+    private Button btFixedAccount;
+    private Button btVariableAccount;
 
     private Spinner spIncome;
     private Spinner spOutcome;
@@ -43,6 +53,8 @@ public class EntryMainActivity extends ActionBarActivity {
     private LinearLayout llTransfer;
     private LinearLayout llSalary;
     private LinearLayout llLoans;
+    private LinearLayout llFixedAccount;
+    private LinearLayout llVariableAccount;
 
     private EditText etValueSalary;
     private EditText etDayPaymentSalary;
@@ -52,14 +64,21 @@ public class EntryMainActivity extends ActionBarActivity {
     private EditText etDayPaymentLoan;
     private EditText etTimeToPayment;
     private EditText etBeneficiaryName;
+    private EditText etValueFixedAccount;
+    private EditText etDayPaymentFixedAccount;
+    private EditText etTypeFixedAccount;
+    private EditText etValueVariableAccount;
+    private EditText etDayPaymentVariableAccount;
+    private EditText etTypeVariableAccount;
+    private EditText etAmountOfInstallmentsVariableAccount;
 
     private RadioGroup rgTypeBeneficiary;
 
     private Db4oHelper db4o;
-    private SalaryDao salaryDao;
-    private LoanDao loanDao;
-    private FixedAccountDao fixedAccountDao;
-    private VariableAccountDao variableAccountDao;
+    private SalaryService salaryService;
+    private LoanService loanService;
+    private FixedAccountService fixedAccountService;
+    private VariableAccountService variableAccountService;
 
     private long userId;
 
@@ -108,8 +127,8 @@ public class EntryMainActivity extends ActionBarActivity {
                 String dayPayment = etDayPaymentSalary.length() > 0 ? etDayPaymentSalary.getText().toString() : "";
                 if (valueSalary.trim() != "" && dayPayment.trim() != "") {
                     Salary salary = new Salary(userId, Double.valueOf(valueSalary.replace(",", ".")), Integer.valueOf(dayPayment));
-                    salaryDao.save(salary);
-                    etValueSalary.setText(null);
+                    salaryService.save(salary);
+                    etValueSalary.setText("");
                     etDayPaymentSalary.setText("");
                 } else {
                     makeAToast(getString(R.string.incompleteSalary));
@@ -131,8 +150,8 @@ public class EntryMainActivity extends ActionBarActivity {
                     double interestRates = etInterestRates.length() > 0 ? Double.parseDouble(etInterestRates.getText().toString().replace(",", ".")) : 0;
                     int timeToPayment = etTimeToPayment.length() > 0 ? Integer.parseInt(etTimeToPayment.getText().toString()) : 0;
                     String beneficiaryName = etBeneficiaryName.length() > 0 ? etBeneficiaryName.getText().toString() : "";
-                    Loan loan = new Loan(userId, valueLoan, amountOfInstallments, interestRates, dayPaymentLoan, timeToPayment, beneficiaryName, typePerson);
-                    loanDao.save(loan);
+                    Loan loan = new Loan(userId, valueLoan, amountOfInstallments, interestRates, dayPaymentLoan, timeToPayment, beneficiaryName, typePerson, Calendar.getInstance().get(Calendar.MONTH));
+                    loanService.save(loan);
                     etValueLoan.setText("");
                     etAmountOfInstallments.setText("");
                     etInterestRates.setText("");
@@ -143,6 +162,36 @@ public class EntryMainActivity extends ActionBarActivity {
                 } else {
                     makeAToast(getString(R.string.incompleteLoan));
                 }
+            }
+        });
+
+        btFixedAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double valueFixedAccount = Double.parseDouble(etValueFixedAccount.getText().toString().replace(",","."));
+                int dayPaymentFixedAccount = Integer.parseInt(etDayPaymentFixedAccount.getText().toString());
+                String typeFixedAccount = etTypeFixedAccount.getText().toString();
+                FixedAccount fixedAccount = new FixedAccount(userId,valueFixedAccount,dayPaymentFixedAccount,typeFixedAccount);
+                fixedAccountService.save(fixedAccount);
+                etValueFixedAccount.setText("");
+                etDayPaymentFixedAccount.setText("");
+                etTypeFixedAccount.setText("");
+            }
+        });
+
+        btVariableAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double valueVariableAccount = Double.parseDouble(etValueVariableAccount.getText().toString().replace(",", "."));
+                int dayPaymentVariableAccount = Integer.parseInt(etDayPaymentVariableAccount.getText().toString());
+                String typeVariableAccount = etTypeVariableAccount.getText().toString();
+                int amountOfInstallmentsVariableAccount = Integer.parseInt(etAmountOfInstallmentsVariableAccount.getText().toString());
+                VariableAccount variableAccount = new VariableAccount(userId, valueVariableAccount, dayPaymentVariableAccount, typeVariableAccount, amountOfInstallmentsVariableAccount);
+                variableAccountService.save(variableAccount);
+                etValueVariableAccount.setText("");
+                etDayPaymentVariableAccount.setText("");
+                etTypeVariableAccount.setText("");
+                etAmountOfInstallmentsVariableAccount.setText("");
             }
         });
 
@@ -182,7 +231,16 @@ public class EntryMainActivity extends ActionBarActivity {
         spOutcome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                CharSequence outomeSelecionado = (CharSequence) parent.getItemAtPosition(position);
+                if(outomeSelecionado.equals(getString(R.string.fixedAccount))){
+                    llFixedAccount.setVisibility(View.VISIBLE);
+                    llVariableAccount.setVisibility(View.GONE);
+                } else {
+                    if(outomeSelecionado.equals(getString(R.string.variableAccounts))){
+                        llFixedAccount.setVisibility(View.GONE);
+                        llVariableAccount.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -218,12 +276,16 @@ public class EntryMainActivity extends ActionBarActivity {
         llTransfer = (LinearLayout) findViewById(R.id.llTransfer);
         llSalary = (LinearLayout) findViewById(R.id.llSalary);
         llLoans = (LinearLayout) findViewById(R.id.llLoans);
+        llFixedAccount = (LinearLayout) findViewById(R.id.llFixedAccount);
+        llVariableAccount = (LinearLayout) findViewById(R.id.llVariableAccount);
 
         btIncome = (Button) findViewById(R.id.btIncome);
         btOutcome = (Button) findViewById(R.id.btOutcome);
         btTransfer = (Button) findViewById(R.id.btTransfer);
         btSalary = (Button) findViewById(R.id.btSalary);
         btLoan = (Button) findViewById(R.id.btLoan);
+        btFixedAccount = (Button) findViewById(R.id.btFixedAccount);
+        btVariableAccount = (Button) findViewById(R.id.btVariableAccount);
 
         spIncome = (Spinner) findViewById(R.id.spIncome);
         spOutcome = (Spinner) findViewById(R.id.spOutcome);
@@ -237,6 +299,13 @@ public class EntryMainActivity extends ActionBarActivity {
         etDayPaymentLoan = (EditText) findViewById(R.id.etDayPaymentLoan);
         etTimeToPayment = (EditText) findViewById(R.id.etTimeToPayment);
         etBeneficiaryName = (EditText) findViewById(R.id.etBeneficiaryName);
+        etValueFixedAccount = (EditText) findViewById(R.id.etValueFixedAccount);
+        etDayPaymentFixedAccount = (EditText) findViewById(R.id.etDayPaymentFixedAccount);
+        etTypeFixedAccount = (EditText) findViewById(R.id.etTypeFixedAccount);
+        etValueVariableAccount = (EditText) findViewById(R.id.etValueVariableAccount);
+        etDayPaymentVariableAccount = (EditText) findViewById(R.id.etDayPaymentVariableAccount);
+        etTypeVariableAccount = (EditText) findViewById(R.id.etTypeVariableAccount);
+        etAmountOfInstallmentsVariableAccount = (EditText) findViewById(R.id.etAmountOfInstallmentsVariableAccount);
 
         rgTypeBeneficiary = (RadioGroup) findViewById(R.id.rgTypeBeneficiary);
     }
@@ -250,10 +319,11 @@ public class EntryMainActivity extends ActionBarActivity {
         //abre o db4o helper
         db4o = new Db4oHelper(dir);
 
-        //abre o cliente dao
-        //Cliente é a classe - DAO (Data Access Object) -> inserir, atualizar, excluir, listar, buscar por id.
-        salaryDao = new SalaryDao(db4o);
-        loanDao = new LoanDao(db4o);
+        //abre os DAO's
+        salaryService = new SalaryService(db4o);
+        loanService = new LoanService(db4o);
+        fixedAccountService = new FixedAccountService(db4o);
+        variableAccountService = new VariableAccountService(db4o);
     }
 
     @Override

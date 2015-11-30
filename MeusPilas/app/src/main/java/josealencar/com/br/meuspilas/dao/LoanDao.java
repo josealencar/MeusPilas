@@ -33,4 +33,8 @@ public class LoanDao {
             }
         });
     }
+
+    public long getId(Loan loan) {
+        return db4o.db().ext().getID(loan);
+    }
 }

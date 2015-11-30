@@ -95,4 +95,7 @@
     <string name="etTypeVariableAccount">Descrição (Tipo)</string>
     <string name="etAmountOfInstallmentsVariableAccount">Quantidade de prestações</string>
     <string name="btVariableAccount">Salvar</string>
+    <string name="title_activity_balance">BalanceActivity</string>
+    <string name="title_activity_incomes">IncomesActivity</string>
+    <string name="title_activity_outcomes">OutcomesActivity</string>
 </resources>

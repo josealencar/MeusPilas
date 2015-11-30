@@ -2,6 +2,7 @@ package josealencar.com.br.meuspilas.dao;
 
 import com.db4o.query.Predicate;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,8 +31,12 @@ public class IncomeDao {
         return db4o.db().query(new Predicate<Income>() {
             @Override
             public boolean match(Income income) {
-                return income.getIdUser() == idUser && income.getMonthIncome() == Calendar.MONTH;
+                return income.getIdUser() == idUser;
             }
         });
+    }
+
+    public long getId(Income income) {
+        return db4o.db().ext().getID(income);
     }
 }

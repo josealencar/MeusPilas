@@ -4,19 +4,19 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class Income {
-    private int idUser;
+    private long idUser;
     private double valueIncome;
     private int monthIncome;
     private String typeIncome;
 
-    public Income(int idUser, double valueIncome, int monthIncome, String typeIncome) {
+    public Income(long idUser, double valueIncome, int monthIncome, String typeIncome) {
         this.idUser = idUser;
         this.valueIncome = valueIncome;
         this.monthIncome = monthIncome;
         this.typeIncome = typeIncome;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return this.idUser;
     }
 
@@ -30,5 +30,10 @@ public class Income {
 
     public String getTypeIncome() {
         return this.typeIncome;
+    }
+
+    @Override
+    public String toString() {
+        return typeIncome + " - R$" + valueIncome;
     }
 }

@@ -38,6 +38,12 @@ public class UserDao {
     }
 
     public User findById(Long id) {
-        return db4o.db().ext().getByID(id);
+        try {
+            User user = db4o.db().ext().getByID(id);
+            db4o.db().ext().activate(user);
+            return user;
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 }

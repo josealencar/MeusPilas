@@ -1,7 +1,9 @@
 package josealencar.com.br.meuspilas.dao;
 
+import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,11 +29,15 @@ public class OutcomeDao {
     }
 
     public List<Outcome> findByIdUser(final long idUser) {
-        return db4o.db().query(new Predicate<Outcome>() {
+        return db4o.db().ext().query(new Predicate<Outcome>() {
             @Override
             public boolean match(Outcome outcome) {
-                return outcome.getIdUser() == idUser && outcome.getMonthOutcome() == Calendar.MONTH;
+                return outcome.getIdUser() == idUser;
             }
         });
+    }
+
+    public long getId(Outcome outcome) {
+        return db4o.db().ext().getID(outcome);
     }
 }

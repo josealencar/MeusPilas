@@ -37,6 +37,21 @@
             android:label="@string/title_activity_new_account"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".BalanceActivity"
+            android:label="@string/title_activity_balance"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".IncomesActivity"
+            android:label="@string/title_activity_incomes"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".OutcomesActivity"
+            android:label="@string/title_activity_outcomes"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

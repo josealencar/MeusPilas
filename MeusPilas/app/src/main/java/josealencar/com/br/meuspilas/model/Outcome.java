@@ -4,19 +4,19 @@ package josealencar.com.br.meuspilas.model;
  * Created by José on 26/05/2015.
  */
 public class Outcome {
-    private int idUser;
+    private long idUser;
     private double valueOutcome;
     private int monthOutcome;
     private String typeOutcome;
 
-    public Outcome(int idUser, double valueOutcome, int monthOutcome, String typeOutcome) {
+    public Outcome(long idUser, double valueOutcome, int monthOutcome, String typeOutcome) {
         this.idUser = idUser;
         this.valueOutcome = valueOutcome;
         this.monthOutcome = monthOutcome;
         this.typeOutcome = typeOutcome;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return this.idUser;
     }
 
@@ -30,5 +30,10 @@ public class Outcome {
 
     public String getTypeOutcome() {
         return this.typeOutcome;
+    }
+
+    @Override
+    public String toString() {
+        return typeOutcome + " - R$" + valueOutcome;
     }
 }

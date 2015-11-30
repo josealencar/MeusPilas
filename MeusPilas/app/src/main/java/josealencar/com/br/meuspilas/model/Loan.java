@@ -12,9 +12,10 @@ public class Loan {
     private int timeToPayment;
     private String beneficiaryName;
     private String typeBeneficiary;
+    private int monthReceived;
 
     public Loan(long idUser, double valueLoan, int amountOfInstallments,
-                double interestRates, int dayPayment, int timeToPayment, String beneficiaryName, String typeBeneficiary) {
+                double interestRates, int dayPayment, int timeToPayment, String beneficiaryName, String typeBeneficiary, int monthReceived) {
         this.idUser = idUser;
         this.valueLoan = valueLoan;
         this.amountOfInstallments = amountOfInstallments;
@@ -23,6 +24,7 @@ public class Loan {
         this.timeToPayment = timeToPayment;
         this.beneficiaryName = beneficiaryName;
         this.typeBeneficiary = typeBeneficiary;
+        this.monthReceived = monthReceived;
     }
 
     public long getIdUser() {
@@ -55,5 +57,9 @@ public class Loan {
 
     public String getTypeBeneficiary() {
         return this.typeBeneficiary;
+    }
+
+    public int getMonthReceived() {
+        return monthReceived;
     }
 }

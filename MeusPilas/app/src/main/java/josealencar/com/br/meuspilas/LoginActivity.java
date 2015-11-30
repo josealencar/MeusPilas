@@ -24,6 +24,7 @@ import java.util.List;
 import josealencar.com.br.meuspilas.dao.Db4oHelper;
 import josealencar.com.br.meuspilas.dao.UserDao;
 import josealencar.com.br.meuspilas.model.User;
+import josealencar.com.br.meuspilas.service.UserService;
 
 
 public class LoginActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -35,7 +36,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
     static final String USER_ID = "userId";
 
     private Db4oHelper db4o;
-    private UserDao userDao;
+    private UserService userService;
 
     private boolean isConcentScreenOpened;
     private boolean isSignInButtonClicked;
@@ -100,11 +101,11 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         String txtEmail = emailUser.getText().toString();
         String txtPassword = passwordUser.getText().toString();
 
-        List<User> users = userDao.findByEmail(txtEmail);
+        List<User> users = userService.findByEmail(txtEmail);
 
         for(User u : users) {
             if (u.getPassword().equals(txtPassword)) {
-                final long userId = userDao.getId(u);
+                final long userId = userService.getId(u);
                 Intent i =new Intent(LoginActivity.this, MainActivity.class);
                 i.putExtra(USER_ID, userId);
                 startActivity(i);
@@ -157,7 +158,7 @@ public class LoginActivity extends ActionBarActivity implements GoogleApiClient.
         db4o = new Db4oHelper(dir);
 
         // abre o user dao
-        userDao = new UserDao(db4o);
+        userService = new UserService(db4o);
     }
 
     @Override

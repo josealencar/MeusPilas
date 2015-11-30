@@ -70,7 +70,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/labelIncome"
                 android:text="@string/income"
                 android:textSize="25sp"/>
 
@@ -91,14 +90,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/labelOutcome"
                 android:text="@string/outcome"
                 android:textSize="25sp"/>
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/valueOutcome"
+                android:id="@+id/labelValueOutcome"
                 android:text="@string/valueOutcome"
                 android:textSize="25sp"/>
         </LinearLayout>

@@ -8,18 +8,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import josealencar.com.br.meuspilas.dao.Db4oHelper;
+import josealencar.com.br.meuspilas.dao.FixedAccountDao;
 import josealencar.com.br.meuspilas.dao.IncomeDao;
 import josealencar.com.br.meuspilas.dao.OutcomeDao;
+import josealencar.com.br.meuspilas.dao.SalaryDao;
 import josealencar.com.br.meuspilas.dao.UserDao;
+import josealencar.com.br.meuspilas.dao.VariableAccountDao;
+import josealencar.com.br.meuspilas.model.FixedAccount;
 import josealencar.com.br.meuspilas.model.Income;
 import josealencar.com.br.meuspilas.model.Outcome;
+import josealencar.com.br.meuspilas.model.Salary;
 import josealencar.com.br.meuspilas.model.User;
+import josealencar.com.br.meuspilas.model.VariableAccount;
+import josealencar.com.br.meuspilas.service.FixedAccountService;
 import josealencar.com.br.meuspilas.service.IncomeService;
+import josealencar.com.br.meuspilas.service.MainService;
 import josealencar.com.br.meuspilas.service.OutcomeService;
+import josealencar.com.br.meuspilas.service.SalaryService;
+import josealencar.com.br.meuspilas.service.UserService;
+import josealencar.com.br.meuspilas.service.VariableAccountService;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,49 +42,123 @@ public class MainActivity extends ActionBarActivity {
 
     //TODO: Menu, Settings, NewEntry...
     private Db4oHelper db4o;
-    private UserDao userDao;
-    private IncomeDao incomeDao;
-    private OutcomeDao outcomeDao;
-
+    private UserService userService;
     private IncomeService incomeService;
     private OutcomeService outcomeService;
+    private SalaryService salaryService;
+    private FixedAccountService fixedAccountService;
+    private VariableAccountService variableAccountService;
+    private MainService mainService;
 
     private User user;
 
+    private Calendar dateDay;
+    private int firstDay;
+    private int today;
+    private int lastDay;
     private long userId;
 
     private TextView lblBalance;
+    private TextView lblIncome;
+    private TextView lblOutcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dateDay = Calendar.getInstance();
+        firstDay = dateDay.getActualMinimum(Calendar.DAY_OF_MONTH);
+        today = dateDay.get(Calendar.DAY_OF_MONTH);
+        lastDay = dateDay.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         Intent i = getIntent();
         userId = i.getLongExtra(LoginActivity.USER_ID, 0);
 
         findConstructor();
         configurarDb4o();
-        
-        updateBalance();
+
+    }
+
+    private void retrieveObjects() {
+        //recupera objetos
+        user = userService.findById(userId);
     }
 
     private void updateBalance() {
         double balance;
-        List<Income> incomes = incomeDao.findByIdUser(userDao.getId(user));
-        List<Outcome> outcomes = outcomeDao.findByIdUser(userDao.getId(user));
-        balance = getIncomeService().getSumIncome(incomes) - getOutcomeService().getSumOutcome(outcomes);
+        List<Salary> salaries = salaryService.findByIdUser(userId);
+        double plusIncomes = 0;
+        for (Salary s : salaries) {
+            if (s.getDayPayment() > today) {
+                plusIncomes += s.getValueSalary();
+            }
+        }
+        List<FixedAccount> fixedAccounts = fixedAccountService.findByUserId(userId);
+        List<VariableAccount> variableAccounts = variableAccountService.findByUserId(userId);
+        double plusOutcomes = 0;
+        for (FixedAccount f : fixedAccounts) {
+            if (f.getDayPayment() > today) {
+                plusOutcomes += f.getValueAccount();
+            }
+        }
+        for (VariableAccount v : variableAccounts) {
+            if (v.getDayPayment() > today) {
+                plusOutcomes += v.getValueAccount();
+            }
+        }
+        List<Income> incomes = incomeService.findByIdUser(userId);
+        List<Outcome> outcomes = outcomeService.findByIdUser(userId);
+        double valueIncomes = plusIncomes + getIncomeService().getSumIncome(incomes);
+        double valueOutcomes = plusOutcomes + getOutcomeService().getSumOutcome(outcomes);
+        balance = valueIncomes - valueOutcomes;
         lblBalance.setText(String.valueOf(balance));
+        lblIncome.setText(String.valueOf(valueIncomes));
+        lblOutcome.setText(String.valueOf(valueOutcomes));
     }
 
     private void findConstructor() {
         lblBalance = (TextView) findViewById(R.id.labelValue);
+        lblIncome = (TextView) findViewById(R.id.labelValueIncome);
+        lblOutcome = (TextView) findViewById(R.id.labelValueOutcome);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         db4o.openConnection();
+
+        //após abrir conexão
+        retrieveObjects();
+        getMainService().doCheckRoutine(userId);
+        updateBalance();
+
+        lblBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, BalanceActivity.class);
+                i.putExtra(USER_ID, userId);
+                startActivity(i);
+            }
+        });
+
+        lblIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, IncomesActivity.class);
+                i.putExtra(USER_ID, userId);
+                startActivity(i);
+            }
+        });
+
+        lblOutcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, OutcomesActivity.class);
+                i.putExtra(USER_ID, userId);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -87,12 +175,12 @@ public class MainActivity extends ActionBarActivity {
         db4o = new Db4oHelper(dir);
 
         // abre respectivos dao
-        userDao = new UserDao(db4o);
-        incomeDao = new IncomeDao(db4o);
-        outcomeDao = new OutcomeDao(db4o);
-
-        //recupera objetos
-        user = userDao.findById(userId);
+        userService = new UserService(db4o);
+        incomeService = new IncomeService(db4o);
+        outcomeService = new OutcomeService(db4o);
+        salaryService = new SalaryService(db4o);
+        fixedAccountService = new FixedAccountService(db4o);
+        variableAccountService = new VariableAccountService(db4o);
     }
 
     @Override
@@ -127,7 +215,7 @@ public class MainActivity extends ActionBarActivity {
 
     private IncomeService getIncomeService() {
         if (incomeService == null) {
-            return new IncomeService();
+            return new IncomeService(db4o);
         } else {
             return incomeService;
         }
@@ -135,9 +223,17 @@ public class MainActivity extends ActionBarActivity {
 
     private OutcomeService getOutcomeService() {
         if (outcomeService == null) {
-            return new OutcomeService();
+            return new OutcomeService(db4o);
         } else {
             return outcomeService;
+        }
+    }
+
+    private MainService getMainService(){
+        if (mainService == null) {
+            return new MainService(db4o);
+        } else {
+            return mainService;
         }
     }
 }
